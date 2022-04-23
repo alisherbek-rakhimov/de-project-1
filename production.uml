@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>1059afbe-1316-4449-9229-128cf9887278.SCHEMA:de.production</OriginalElement>
+  <nodes>
+    <node x="-11.75" y="336.0">1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.orderstatuslog</node>
+    <node x="-99.0" y="110.0">1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.orderstatuses</node>
+    <node x="49.0" y="44.0">1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.orders</node>
+    <node x="266.0" y="99.0">1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.products</node>
+    <node x="77.0" y="-105.0">1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.users</node>
+    <node x="164.0" y="303.0">1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.orderitems</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.orders" target="1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.users" relationship="REFERENCES">
+      <point x="0.0" y="-104.5" />
+      <point x="0.0" y="49.5" />
+    </edge>
+    <edge source="1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.orderstatuslog" target="1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.orders" relationship="REFERENCES">
+      <point x="34.0" y="-60.5" />
+      <point x="90.25" y="278.0" />
+      <point x="147.5" y="278.0" />
+      <point x="0.0" y="104.5" />
+    </edge>
+    <edge source="1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.orderitems" target="1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.products" relationship="REFERENCES">
+      <point x="39.0" y="-93.5" />
+      <point x="281.0" y="278.0" />
+      <point x="336.5" y="278.0" />
+      <point x="0.0" y="49.5" />
+    </edge>
+    <edge source="1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.orderstatuslog" target="1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.orderstatuses" relationship="REFERENCES">
+      <point x="-34.0" y="-60.5" />
+      <point x="22.25" y="278.0" />
+      <point x="-35.0" y="278.0" />
+      <point x="0.0" y="38.5" />
+    </edge>
+    <edge source="1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.orderitems" target="1059afbe-1316-4449-9229-128cf9887278.TABLE:de.production.orders" relationship="REFERENCES">
+      <point x="-39.0" y="-93.5" />
+      <point x="203.0" y="278.0" />
+      <point x="147.5" y="278.0" />
+      <point x="0.0" y="104.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.971798780487805" showDependencies="false" x="-65.45850980392123" y="326.9647058823529" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
