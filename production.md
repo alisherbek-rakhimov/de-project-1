@@ -42,9 +42,13 @@ class users {
 }
 
 orders  -->  orderitems : order_id
+
 products  -->  orderitems : product_id:id
+
 users  -->  orders : user_id:id
+
 orders  -->  orderstatuslog : order_id
+
 orderstatuses  -->  orderstatuslog : status_id:id
 
 ```
