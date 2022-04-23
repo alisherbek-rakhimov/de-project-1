@@ -1,5 +1,6 @@
 # Проект 1
 Опишите здесь поэтапно ход решения задачи. Вы можете ориентироваться на тот план выполнения проекта, который мы предлагаем в инструкции на платформе.
+```mermaid
 
 journey
 	title Me studying for exams
@@ -14,3 +15,4 @@ journey
 	section Result Declared
 		I passed the exam with destinction!: 5: Me
 		Friend barely gets passing marks: 2: Friend
+```
