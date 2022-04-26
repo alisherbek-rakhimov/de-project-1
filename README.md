@@ -370,7 +370,10 @@ from u_recency ur
          join u_monetary um on ur.user_id = um.user_id
 ```
 # Тут было замечание насчет join-ов, слегка поменял логику. Стало намного понятнее
-# и без лишних join-ов
+# и без лишних join-ов то есть при этих join-ах 
+```join u_frequency uf on ur.user_id = uf.user_id join u_monetary um on ur.user_id = um.user_id```
+# ничего не должно потеряться
+# так как во всех CTE u_monetary, u_frequency и u_recency кол-во user_id одинаковы
 
 | user\_id | monetary\_value | recency | frequency |
 | :--- | :--- | :--- | :--- |
