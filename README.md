@@ -339,53 +339,46 @@ with gte_2021_closed_orders as (select o.order_id, user_id, payment, order_ts
                                          join analysis.orders o on ol.order_id = o.order_id
                                 where status_id = 4
                                   and extract(year from order_ts) >= 2021),
-     u_recency as (select u.id as user_id, max(order_ts) last_order_was
-                   from gte_2021_closed_orders o
-                            right join analysis.users u on o.user_id = u.id
-                   group by u.id),
-     u_frequency as (select u.id as user_id, count(order_id) orders_cnt
-                     from gte_2021_closed_orders o
-                              join analysis.users u on o.user_id = u.id
-                     group by u.id),
-     u_monetary as (select u.id as user_id, sum(payment) spent
-                    from gte_2021_closed_orders o
-                             join analysis.users u on o.user_id = u.id
-                    group by u.id)
-select u_recency.user_id,
---        last_order_was,
-       ntile(5) over (order by last_order_was desc) as recency,
---        orders_cnt,
-       ntile(5) over (order by orders_cnt)          as frequency,
---        spent,
+     tmp as (select distinct u.id                                                       as user_id,
+                             coalesce(extract(epoch from max(order_ts) over (partition by u.id)), 0) as last_order_was,
+                             count(order_id) over (partition by u.id)                   as orders_cnt,
+                             coalesce(sum(payment) over (partition by u.id), 0)         as spent
+             from analysis.users u
+                      left join gte_2021_closed_orders on u.id = gte_2021_closed_orders.user_id)
+select user_id,
+       last_order_was,
+       ntile(5) over (order by last_order_was) as recency,
+       orders_cnt,
+       ntile(5) over (order by orders_cnt )         as frequency,
+       spent,
        ntile(5) over (order by spent)               as monetary_value
-from u_recency
-       left join u_frequency on u_recency.user_id = u_frequency.user_id
-       left join u_monetary on u_recency.user_id = u_monetary.user_id
+from tmp
+order by last_order_was
 ```
-# Сменил на left join чтоб юзыре из u_recency не потерялись
+# По подсказмам упростил запрос
 
-| user\_id | recency | frequency | monetary\_value |
-| :--- | :--- | :--- | :--- |
-| 211 | 1 | 5 | 5 |
-| 514 | 1 | 5 | 5 |
-| 930 | 1 | 5 | 5 |
-| 889 | 1 | 5 | 5 |
-| 821 | 1 | 5 | 5 |
-| 784 | 1 | 5 | 5 |
-| 977 | 1 | 5 | 5 |
-| 276 | 1 | 5 | 5 |
-| 730 | 1 | 5 | 5 |
-| 837 | 1 | 5 | 5 |
-| 467 | 1 | 5 | 5 |
-| 224 | 1 | 5 | 5 |
-| 159 | 1 | 2 | 1 |
-| 615 | 1 | 4 | 4 |
-| 499 | 1 | 5 | 5 |
-| 477 | 1 | 4 | 4 |
-| 445 | 1 | 1 | 1 |
-| 386 | 1 | 2 | 3 |
-| 568 | 1 | 5 | 5 |
-| 579 | 1 | 2 | 1 |
+| user\_id | last\_order\_was | recency | orders\_cnt | frequency | spent | monetary\_value |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 467 | 0 | 1 | 0 | 1 | 0 | 1 |
+| 889 | 0 | 1 | 0 | 1 | 0 | 1 |
+| 211 | 0 | 1 | 0 | 1 | 0 | 1 |
+| 821 | 0 | 1 | 0 | 1 | 0 | 1 |
+| 977 | 0 | 1 | 0 | 1 | 0 | 1 |
+| 784 | 0 | 1 | 0 | 1 | 0 | 1 |
+| 514 | 0 | 1 | 0 | 1 | 0 | 1 |
+| 930 | 0 | 1 | 0 | 1 | 0 | 1 |
+| 224 | 0 | 1 | 0 | 1 | 0 | 1 |
+| 730 | 0 | 1 | 0 | 1 | 0 | 1 |
+| 837 | 0 | 1 | 0 | 1 | 0 | 1 |
+| 276 | 0 | 1 | 0 | 1 | 0 | 1 |
+| 388 | 1644771366 | 1 | 1 | 1 | 480 | 1 |
+| 748 | 1644801643 | 1 | 1 | 1 | 4080 | 1 |
+| 522 | 1644807210 | 1 | 1 | 1 | 2760 | 1 |
+| 813 | 1644854972 | 1 | 1 | 1 | 2520 | 1 |
+| 202 | 1644896051 | 1 | 1 | 1 | 2820 | 1 |
+| 840 | 1644927918 | 1 | 1 | 1 | 2400 | 1 |
+| 656 | 1645013574 | 1 | 4 | 2 | 9180 | 2 |
+| 90 | 1645024913 | 1 | 2 | 1 | 5400 | 1 |
 
 
 
